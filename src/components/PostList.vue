@@ -1,24 +1,15 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { getPosts } from '../api/getPosts.js';
 import PostItem from './PostItem.vue'
-
-const posts = ref([])
-
-onMounted(async()=>{
-    try{
-    posts.value=  await getPosts();
-    console.log(posts.value);
-    }catch(e){
-        console.log(e);
-    }
+const props = defineProps({
+  posts: {type:Object},
 })
+const emit = defineEmits(['closePost'])
 </script>
 
 <template lang="pug">
-  div(class="box")
-    div( v-for="post in posts" :key="post.id")
-        PostItem( :post="post.abstract")
+  div(class="box q-pa-md")
+    q-list( v-for="post in props.posts" :key="post.id" separator)
+      PostItem(:post="post" v-ripple:cyan-1 @close-post="$emit('closePost', post.id)")
 </template>
 <style  scoped>
 .box{

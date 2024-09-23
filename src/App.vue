@@ -1,13 +1,30 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import Basic from './components/Basic.vue'
+import { ref, onMounted } from 'vue'
+import { getPosts } from './api/getPosts.js';
+import InputSearch from './components/Basic.vue'
 import PostList from './components/PostList.vue'
 import Hi from './components/Hi.vue'
+
+const posts = ref([])
+onMounted(async()=>{
+    try{
+    posts.value=  await getPosts();
+    // console.log(posts.value);
+    }catch(e){
+        console.log(e);
+    }
+})
+
+function closePost(id){
+  posts.value=posts.value.filter(item=>item.id!=id)
+}
+
 </script>
 
 <template>
   <!-- <Basic /> -->
-  <PostList />
+   <InputSearch/>
+  <PostList :posts="posts" @close-post="closePost"/>
   <Hi :msg="'go'"/>
 </template>
 
