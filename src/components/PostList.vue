@@ -11,6 +11,7 @@ const emit = defineEmits(['closePost'])
     q-list( v-for="post in props.posts" :key="post.id" separator)
       PostItem(:post="post" v-ripple:cyan-1 @close-post="$emit('closePost', post.id)")
 </template>
+
 <style  scoped>
 .box{
   width: 100%;
